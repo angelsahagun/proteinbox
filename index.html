@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProteinBox — Protein Shakes al Instante</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--lime:#7fff00;--dark:#0a0a0a;--card:#111;--gray:#888;--cyan:#00e5ff}
+    html{scroll-behavior:smooth}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--dark);color:#fff}
+    a{text-decoration:none;color:inherit}
+
+    /* NAV */
+    nav{position:fixed;top:0;width:100%;background:rgba(10,10,10,.95);backdrop-filter:blur(10px);z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;border-bottom:1px solid #222}
+    .logo{font-weight:900;font-size:1.5rem;color:var(--lime);letter-spacing:2px}
+    .logo span{color:#fff}
+    nav ul{display:flex;list-style:none;gap:2rem}
+    nav ul a{color:#ccc;font-weight:600;text-transform:uppercase;font-size:.85rem;letter-spacing:1px;transition:color .3s}
+    nav ul a:hover{color:var(--lime)}
+    .hamburger{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
+
+    /* HERO */
+    .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:8rem 2rem 4rem;background:radial-gradient(ellipse at 50% 0%,#1a2f00 0%,var(--dark) 70%)}
+    .hero h1{font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:1.1;margin-bottom:1rem}
+    .hero h1 .green{color:var(--lime)}
+    .hero p{font-size:1.2rem;color:#aaa;max-width:600px;margin-bottom:2rem}
+    .btn{display:inline-block;background:var(--lime);color:#000;padding:.9rem 2.5rem;border-radius:50px;font-weight:700;font-size:1rem;transition:transform .3s,box-shadow .3s}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(127,255,0,.3)}
+
+    /* STATS */
+    .stats{display:flex;justify-content:center;gap:3rem;padding:3rem 2rem;flex-wrap:wrap}
+    .stat{text-align:center}
+    .stat h3{font-size:2rem;color:var(--lime);font-weight:900}
+    .stat p{color:var(--gray);font-size:.85rem;margin-top:.25rem}
+
+    /* SECTIONS */
+    section{padding:5rem 2rem}
+    .section-label{color:var(--lime);font-size:.8rem;text-transform:uppercase;letter-spacing:3px;font-weight:700;margin-bottom:.5rem}
+    .section-title{font-size:clamp(2rem,4vw,3rem);font-weight:900;margin-bottom:1rem}
+    .section-title .highlight{color:var(--lime)}
+    .section-desc{color:#aaa;max-width:600px;font-size:1.05rem;margin-bottom:3rem}
+
+    /* QUE ES */
+    .quees-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+    .quees-text ul{list-style:none;margin-top:1.5rem}
+    .quees-text li{padding:.6rem 0;color:#ccc;font-size:.95rem}
+    .quees-text li::before{content:'✓ ';color:var(--lime);font-weight:bold}
+    .machine-mockup{background:#111;border:2px solid var(--lime);border-radius:20px;padding:2rem;text-align:center;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;box-shadow:0 0 40px rgba(127,255,0,.1)}
+    .machine-mockup h4{color:var(--lime);font-weight:900;letter-spacing:3px;font-size:1.1rem;margin-bottom:1rem}
+    .machine-screen{border:2px dashed rgba(127,255,0,.4);border-radius:12px;padding:2rem;margin-bottom:1rem;width:80%}
+    .machine-screen p{color:var(--lime);font-weight:700}
+    .cup-icon{font-size:2.5rem;margin-top:1rem}
+
+    /* COMO FUNCIONA */
+    .steps{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+    .step{background:var(--card);border:1px solid #222;border-radius:16px;padding:2rem;text-align:center;transition:border-color .3s,transform .3s}
+    .step:hover{border-color:var(--lime);transform:translateY(-5px)}
+    .step-num{font-size:2.5rem;font-weight:900;color:var(--lime);margin-bottom:.5rem}
+    .step-icon{font-size:2rem;margin-bottom:.75rem}
+    .step h3{margin-bottom:.5rem;font-size:1.1rem}
+    .step p{color:#aaa;font-size:.9rem;line-height:1.5}
+
+    /* BENEFICIOS */
+    .benefits-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .benefit{background:var(--card);border:1px solid #222;border-radius:16px;padding:2rem;transition:border-color .3s,transform .3s}
+    .benefit:hover{border-color:var(--lime);transform:translateY(-3px)}
+    .benefit-icon{font-size:2rem;margin-bottom:1rem}
+    .benefit h3{font-size:1.05rem;margin-bottom:.5rem}
+    .benefit p{color:#aaa;font-size:.9rem;line-height:1.5}
+
+    /* UBICACIONES */
+    .locations-grid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .location{background:var(--card);border:1px solid #222;border-radius:16px;padding:2rem;text-align:center;transition:border-color .3s}
+    .location:hover{border-color:var(--lime)}
+    .location-icon{font-size:2.5rem;margin-bottom:.75rem}
+    .location h3{font-size:1rem;margin-bottom:.3rem}
+    .location p{color:var(--gray);font-size:.85rem}
+
+    /* SABORES */
+    .flavors-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+    .flavor{background:var(--card);border:1px solid #222;border-radius:16px;padding:1.5rem;text-align:center;transition:border-color .3s,transform .3s}
+    .flavor:hover{border-color:var(--lime);transform:translateY(-3px)}
+    .flavor-emoji{font-size:2.5rem;margin-bottom:.75rem}
+    .flavor h3{font-size:.95rem;margin-bottom:.3rem}
+    .flavor p{color:var(--lime);font-size:.85rem;font-weight:600}
+
+    /* CTA */
+    .cta-section{text-align:center;padding:5rem 2rem;background:linear-gradient(180deg,var(--dark),#0d1a00)}
+    .cta-section h2{font-size:clamp(1.8rem,3vw,2.5rem);margin-bottom:1rem}
+    .cta-section h2 .highlight{color:var(--lime)}
+    .cta-section p{color:#aaa;margin-bottom:2rem;max-width:600px;margin-left:auto;margin-right:auto}
+
+    /* CONTACTO */
+    .contact-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+    .contact-info h3{font-size:1.3rem;margin-bottom:1.5rem}
+    .contact-item{display:flex;align-items:center;gap:.75rem;padding:.6rem 0;color:#ccc;font-size:.95rem}
+    .contact-item span:first-child{font-size:1.2rem}
+    .consumer-note{margin-top:2rem;padding:1.5rem;background:var(--card);border-radius:12px;border:1px solid #222}
+    .consumer-note h4{color:var(--lime);margin-bottom:.5rem}
+    .consumer-note p{color:#aaa;font-size:.9rem;line-height:1.5}
+
+    /* FORM */
+    .contact-form{display:flex;flex-direction:column;gap:1rem}
+    .contact-form label{font-weight:600;font-size:.9rem;color:#ccc}
+    .contact-form input,.contact-form select,.contact-form textarea{background:#111;border:1px solid #333;border-radius:10px;padding:.8rem 1rem;color:#fff;font-size:.95rem;font-family:inherit;transition:border-color .3s}
+    .contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus{outline:none;border-color:var(--lime)}
+    .contact-form textarea{min-height:100px;resize:vertical}
+    .submit-btn{background:var(--lime);color:#000;border:none;padding:1rem;border-radius:50px;font-weight:700;font-size:1rem;cursor:pointer;transition:transform .3s,box-shadow .3s}
+    .submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(127,255,0,.3)}
+
+    /* FOOTER */
+    footer{text-align:center;padding:3rem 2rem;border-top:1px solid #222}
+    .footer-logo{font-weight:900;font-size:1.3rem;color:var(--lime);letter-spacing:2px;margin-bottom:1rem}
+    .footer-logo span{color:#fff}
+    .footer-links{display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem}
+    .footer-links a{color:#aaa;transition:color .3s}
+    .footer-links a:hover{color:var(--lime)}
+    footer .copy{color:var(--gray);font-size:.8rem}
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+      nav ul{display:none}
+      .hamburger{display:block}
+      .quees-grid,.contact-grid{grid-template-columns:1fr}
+      .steps{grid-template-columns:1fr}
+      .benefits-grid,.locations-grid{grid-template-columns:1fr 1fr}
+      .flavors-grid{grid-template-columns:1fr 1fr}
+      .stats{gap:1.5rem}
+    }
+    @media(max-width:480px){
+      .benefits-grid,.locations-grid,.flavors-grid{grid-template-columns:1fr}
+    }
+    </style>
+  </head>
+  <body>
+
+    <!-- NAV -->
+    <nav id="navbar">
+      <a href="#" class="logo">PROTEIN<span>BOX</span></a>a>
+    <ul>
+      <li><a href="#quees">¿Qué es?</a>a></li>
+    <li><a href="#como">¿Cómo funciona?</a>a></li>
+    <li><a href="#beneficios">Beneficios</a>a></li>
+    <li><a href="#sabores">Sabores</a>a></li>
+    <li><a href="#contacto">Contacto</a>a></li>
+    </ul>
+    <button class="hamburger" onclick="document.getElementById('navbar').classList.toggle('open')">☰</button>button>
+    </nav>nav>
+  
+  <!-- HERO -->
+  <section class="hero" id="hero">
+  <h1><span class="green">PROTEIN SHAKES</span><br>AL INSTANTE</h1>
+  <p>La máquina de vending inteligente que prepara tu protein shake fresco, personalizado y listo en menos de 60 segundos.</p>
+  <a href="#contacto" class="btn">Lleva ProteinBox a tu negocio</a>a>
+  </section>section>
+  
+  <!-- STATS -->
+  <div class="stats">
+  <div class="stat"><h3>&lt; 60s</h3><p>Tiempo de preparación</p></div>div>
+  <div class="stat"><h3>12+</h3><p>Sabores disponibles</p></div>div>
+  <div class="stat"><h3>24/7</h3><p>Disponibilidad total</p></div>div>
+  <div class="stat"><h3>100%</h3><p>Automatizado</p></div>div>
+  </div>div>
+  
+  <!-- QUE ES -->
+  <section id="quees">
+  <div class="quees-grid">
+  <div class="quees-text">
+  <div class="section-label">Innovación fitness</div>div>
+  <h2 class="section-title">¿Qué es <span class="highlight">ProteinBox</span>?</h2>
+  <p class="section-desc">Es la primera máquina de vending en México que prepara protein shakes frescos y personalizados al momento. Solo elige, paga y disfruta.</p>
+  <ul>
+  <li>Shakes preparados al instante con ingredientes premium</li>
+  <li>Dosis exacta de proteína en cada batido</li>
+  <li>Siempre frío, siempre perfecto</li>
+  <li>Pago con tarjeta, efectivo o código QR</li>
+  <li>Reabastecimiento y mantenimiento incluido</li>
+  </ul>
+  </div>div>
+  <div class="machine-mockup">
+  <h4>PROTEINBOX</h4>
+  <div class="machine-screen">
+  <p>SELECCIONA TU SHAKE</p>
+  </div>div>
+  <div class="cup-icon">🥤</div>div>
+  </div>div>
+  </div>div>
+  </section>section>
+  
+  <!-- COMO FUNCIONA -->
+  <section id="como">
+  <div style="text-align:center">
+  <div class="section-label">Súper fácil</div>div>
+  <h2 class="section-title">¿Cómo <span class="highlight">funciona</span>?</h2>
+  <p class="section-desc" style="margin-left:auto;margin-right:auto">Tu shake perfecto en 3 simples pasos.</p>
+  </div>div>
+  <div class="steps">
+  <div class="step">
+  <div class="step-num">01</div>div>
+  <div class="step-icon">👆</div>div>
+  <h3>Elige tu shake</h3>
+  <p>Selecciona entre más de 12 sabores y personaliza tu batido con extras como creatina, colágeno o vitaminas.</p>
+  </div>div>
+  <div class="step">
+  <div class="step-num">02</div>div>
+  <div class="step-icon">💳</div>div>
+  <h3>Paga fácil</h3>
+  <p>Acepta efectivo, tarjeta de crédito/débito y pagos con código QR. Rápido y seguro.</p>
+  </div>div>
+  <div class="step">
+  <div class="step-num">03</div>div>
+  <div class="step-icon">🥤</div>div>
+  <h3>¡Disfruta!</h3>
+  <p>En menos de 60 segundos tu shake está listo: fresco, bien mezclado y con la dosis perfecta de proteína.</p>
+  </div>div>
+  </div>div>
+  </section>section>
+  
+  <!-- BENEFICIOS -->
+  <section id="beneficios">
+  <div style="text-align:center">
+  <div class="section-label">Para todos</div>div>
+  <h2 class="section-title">Beneficios para <span class="highlight">tu negocio</span> y <span class="highlight">tus clientes</span></h2>
+  <p class="section-desc" style="margin-left:auto;margin-right:auto">ProteinBox genera valor para dueños de gimnasios, plazas comerciales y para los consumidores finales.</p>
+  </div>div>
+  <div class="benefits-grid">
+  <div class="benefit">
+  <div class="benefit-icon">💰</div>div>
+  <h3>Ingreso extra sin esfuerzo</h3>
+  <p>Genera una nueva fuente de ingresos pasivos en tu gimnasio, plaza o centro deportivo sin necesidad de contratar personal adicional.</p>
+  </div>div>
+  <div class="benefit">
+  <div class="benefit-icon">🏋️</div>div>
+  <h3>Valor agregado a tu gym</h3>
+  <p>Ofrece un servicio premium a tus miembros. Shakes de proteína frescos mejoran la experiencia y la retención de clientes.</p>
+  </div>div>
+  <div class="benefit">
+  <div class="benefit-icon">⏱️</div>div>
+  <h3>Ahorra tiempo</h3>
+  <p>No más llevar tu shaker, polvo y agua. ProteinBox te da tu shake perfecto al terminar tu entrenamiento.</p>
+  </div>div>
+  <div class="benefit">
+  <div class="benefit-icon">✅</div>div>
+  <h3>Calidad garantizada</h3>
+  <p>Ingredientes de las mejores marcas de suplementos, con información nutricional clara en cada shake.</p>
+  </div>div>
+  <div class="benefit">
+  <div class="benefit-icon">🔧</div>div>
+  <h3>Sin complicaciones</h3>
+  <p>Nosotros nos encargamos de la instalación, reabastecimiento y mantenimiento. Tú solo recibes los beneficios.</p>
+  </div>div>
+  <div class="benefit">
+  <div class="benefit-icon">🎨</div>div>
+  <h3>Variedad de sabores</h3>
+  <p>Chocolate, vainilla, fresa, cookies & cream, mango y muchos más. Siempre hay algo nuevo para probar.</p>
+  </div>div>
+  </div>div>
+  </section>section>
+  
+  <!-- UBICACIONES -->
+  <section id="ubicaciones">
+  <div style="text-align:center">
+  <div class="section-label">¿Dónde?</div>div>
+  <h2 class="section-title">Ideal para <span class="highlight">cualquier espacio</span></h2>
+  <p class="section-desc" style="margin-left:auto;margin-right:auto">ProteinBox se adapta a diferentes tipos de negocios y ubicaciones.</p>
+  </div>div>
+  <div class="locations-grid">
+  <div class="location"><div class="location-icon">🏋️‍♂️</div>div><h3>Gimnasios</h3><p>El lugar perfecto post-entrenamiento</p></div>div>
+  <div class="location"><div class="location-icon">🏢</div>div><h3>Plazas Comerciales</h3><p>Alto tráfico, alto consumo</p></div>div>
+  <div class="location"><div class="location-icon">🏫</div>div><h3>Universidades</h3><p>Estudiantes activos y saludables</p></div>div>
+  <div class="location"><div class="location-icon">🏊</div>div><h3>Centros Deportivos</h3><p>Atletas que necesitan recuperarse</p></div>div>
+  <div class="location"><div class="location-icon">🏥</div>div><h3>Centros de Salud</h3><p>Nutrición rápida y balanceada</p></div>div>
+  <div class="location"><div class="location-icon">🏗️</div>div><h3>Oficinas Corporativas</h3><p>Snack saludable para el equipo</p></div>div>
+  </div>div>
+  </section>section>
+  
+  <!-- SABORES -->
+  <section id="sabores">
+  <div style="text-align:center">
+  <div class="section-label">Menú</div>div>
+  <h2 class="section-title">Nuestros <span class="highlight">sabores</span></h2>
+  <p class="section-desc" style="margin-left:auto;margin-right:auto">Protein shakes deliciosos con ingredientes de la más alta calidad.</p>
+  </div>div>
+  <div class="flavors-grid">
+  <div class="flavor"><div class="flavor-emoji">🍫</div>div><h3>Chocolate Power</h3><p>25g proteína</p></div>div>
+  <div class="flavor"><div class="flavor-emoji">🍦</div>div><h3>Vainilla Clásica</h3><p>25g proteína</p></div>div>
+  <div class="flavor"><div class="flavor-emoji">🍓</div>div><h3>Fresa Blast</h3><p>25g proteína</p></div>div>
+  <div class="flavor"><div class="flavor-emoji">🍪</div>div><h3>Cookies & Cream</h3><p>25g proteína</p></div>div>
+  <div class="flavor"><div class="flavor-emoji">🥭</div>div><h3>Mango Tropical</h3><p>25g proteína</p></div>div>
+  <div class="flavor"><div class="flavor-emoji">🍌</div>div><h3>Banana Split</h3><p>25g proteína</p></div>div>
+  <div class="flavor"><div class="flavor-emoji">🫐</div>div><h3>Blueberry Mix</h3><p>25g proteína</p></div>div>
+  <div class="flavor"><div class="flavor-emoji">🥜</div>div><h3>Crema de Cacahuate</h3><p>28g proteína</p></div>div>
+  </div>div>
+  </section>section>
+  
+  <!-- CTA -->
+  <div class="cta-section">
+  <h2>¿Listo para llevar <span class="highlight">ProteinBox</span> a tu negocio?</h2>
+  <p>Contáctanos hoy y descubre cómo ProteinBox puede generar ingresos adicionales mientras ofreces un servicio increíble.</p>
+  <a href="#contacto" class="btn">Quiero más información</a>a>
+  </div>div>
+  
+  <!-- CONTACTO -->
+  <section id="contacto">
+  <div style="text-align:center">
+  <div class="section-label">Hablemos</div>div>
+  <h2 class="section-title">Contáctanos</h2>
+  <p class="section-desc" style="margin-left:auto;margin-right:auto">¿Tienes un gym, plaza o espacio donde ProteinBox podría funcionar? Escríbenos y te contactamos.</p>
+  </div>div>
+  <div class="contact-grid">
+  <div class="contact-info">
+  <h3>Información de contacto</h3>
+  <div class="contact-item"><span>📧</span> hola@proteinbox.com</div>div>
+  <div class="contact-item"><span>📱</span> +52 (55) 1234-5678</div>div>
+  <div class="contact-item"><span>📍</span> Ciudad de México, México</div>div>
+  <div class="contact-item"><span>📸</span> @proteinbox.mx</div>div>
+  <div class="consumer-note">
+  <h4>¿Eres consumidor?</h4>
+  <p>¡Pronto anunciaremos nuestras primeras ubicaciones! Síguenos en redes sociales para ser de los primeros en probar ProteinBox.</p>
+  </div>div>
+  </div>div>
+  <form class="contact-form" id="contactForm">
+  <label>Nombre completo</label>
+  <input type="text" placeholder="Tu nombre" required>
+  <label>Email</label>
+  <input type="email" placeholder="tu@email.com" required>
+  <label>Teléfono</label>
+  <input type="tel" placeholder="+52 (55) 0000-0000">
+  <label>Tipo de negocio</label>
+  <select required>
+  <option value="">Selecciona una opción</option>option>
+  <option>Gimnasio</option>
+  <option>Plaza Comercial</option>
+  <option>Centro Deportivo</option>
+  <option>Universidad</option>
+  <option>Oficina Corporativa</option>
+  <option>Otro</option>
+  </select>select>
+  <label>Mensaje</label>
+  <textarea placeholder="Cuéntanos sobre tu espacio y cómo podemos colaborar..."></textarea>
+  <button type="submit" class="submit-btn">Enviar mensaje 🚀</button>button>
+  </form>form>
+  </div>div>
+  </section>section>
+  
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">PROTEIN<span>BOX</span></div>div>
+    <div class="footer-links">
+      <a href="#">Instagram</a>a>
+      <a href="#">Facebook</a>a>
+      <a href="#">TikTok</a>a>
+      <a href="#">WhatsApp</a>a>
+    </div>div>
+    <p class="copy">© 2026 ProteinBox.com — Todos los derechos reservados.</p>p>
+  </footer>
+
+    <script>
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click',e=>{
+          e.preventDefault();
+          const t=document.querySelector(a.getAttribute('href'));
+          if(t)t.scrollIntoView({behavior:'smooth'});
+          document.getElementById('navbar').classList.remove('open');
+        });
+      });
+      document.getElementById('contactForm').addEventListener('submit',e=>{
+        e.preventDefault();
+        const btn=e.target.querySelector('.submit-btn');
+        btn.textContent='¡Mensaje enviado! ✅';
+        btn.style.background='var(--cyan)';
+        setTimeout(()=>{btn.textContent='Enviar mensaje 🚀';btn.style.background='var(--lime)';e.target.reset()},3000);
+      });
+    </script>
+  </body>
+</html>html>
+    </script>
+  </footer></option></option></label></label></p></p></li></li></p></p></h1></li></li>
+    </ul></span>
+  </body>
+  </style></title>
+  </head>
